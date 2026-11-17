@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "NaN Usage",
+  "version": "0.2.1",
+  "description": "Créditos, caché, gasto diario y por modelo de tu cuenta de nan.builders en el panel lateral, usando tu sesión del navegador.",
+  "minimum_chrome_version": "116",
+  "permissions": ["alarms", "storage", "notifications", "sidePanel"],
+  "host_permissions": ["https://*.nan.builders/*"],
+  "background": {
+    "service_worker": "sw.js",
+    "type": "module"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  },
+  "action": {
+    "default_title": "NaN Usage",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
