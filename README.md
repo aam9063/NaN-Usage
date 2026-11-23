@@ -1,6 +1,6 @@
 # NaN Usage
 
-Extensión de Chrome que muestra el uso de tu cuenta de nan.builders en el panel lateral, sin pedir API key ni login: reutiliza la sesión que ya tienes abierta en cloud.nan.builders (cookie `nan_session`).
+Extensión para Chrome y Firefox que muestra el uso de tu cuenta de nan.builders en el panel lateral, sin pedir API key ni login: reutiliza la sesión que ya tienes abierta en cloud.nan.builders (cookie `nan_session`).
 
 ## Instalar
 
@@ -13,6 +13,10 @@ No abras `panel.html` directamente: fuera de Chrome como extensión no tiene acc
 5. Ten una sesión abierta en https://cloud.nan.builders.
 
 Para actualizar tras cambiar archivos: botón de recargar de la extensión en `chrome://extensions`.
+
+## Firefox
+
+La carpeta [`firefox/`](firefox/) contiene el port para Firefox: usa la barra lateral nativa en lugar de `chrome.sidePanel` y una página de eventos en lugar del service worker. Instrucciones de carga, empaquetado y diferencias en [`firefox/README.md`](firefox/README.md). La versión de Chrome no se modifica.
 
 ## Qué muestra
 

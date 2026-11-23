@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "NaN Usage",
+  "version": "0.2.1",
+  "description": "Créditos, caché, gasto diario y por modelo de tu cuenta de nan.builders en la barra lateral, usando tu sesión del navegador.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{30b53699-dd27-435b-809d-203cc6809204}",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["websiteContent"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
+    }
+  },
+  "permissions": ["alarms", "storage", "notifications"],
+  "host_permissions": ["https://*.nan.builders/*"],
+  "background": {
+    "scripts": ["sw.js"],
+    "type": "module"
+  },
+  "sidebar_action": {
+    "default_panel": "panel.html",
+    "default_title": "NaN Usage",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+    },
+    "open_at_install": true
+  },
+  "action": {
+    "default_title": "NaN Usage",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

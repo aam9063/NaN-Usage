@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NaN Usage</title>
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand"><span class="pulse"></span>NaN <small>USAGE</small></div>
+      <div class="actions">
+        <button id="refresh" class="icon" title="Actualizar" aria-label="Actualizar">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="open" class="icon" title="Abrir dashboard" aria-label="Abrir dashboard">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+    <div id="banner" hidden></div>
+    <main id="main"><div class="skeleton"></div><div class="skeleton short"></div></main>
+    <footer>
+      <span id="updated"></span>
+      <button id="buy" class="link">+ Comprar créditos</button>
+    </footer>
+    <script type="module" src="panel.js"></script>
+  </body>
+</html>
