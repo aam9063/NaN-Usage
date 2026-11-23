@@ -36,3 +36,11 @@ En `lib.js`:
 El service worker hace `fetch` con `credentials: "include"`. Como la extensión tiene `host_permissions` sobre `*.nan.builders`, Chrome adjunta la cookie de sesión y se salta el CORS. La extensión nunca lee ni guarda el token. Si la sesión caduca, el badge muestra `!` y el panel ofrece abrir el portal.
 
 Los endpoints no están documentados: si NaN los cambia, hay que actualizar las URLs.
+
+## Contribuir
+
+¿Quieres reportar un bug, proponer una mejora o enviar un cambio? Lee [CONTRIBUTING.md](CONTRIBUTING.md): ahí están el protocolo de issues y pull requests, cómo probar la extensión en local y las reglas de diseño que no se rompen (nada de leer la cookie de sesión, telemetría, dependencias ni permisos de más).
+
+## Licencia
+
+[MIT](LICENSE) © 2026 aam9063.
