@@ -1,0 +1,24 @@
+name: Firefox extension
+
+on:
+  push:
+    paths:
+      - 'firefox/**'
+      - '.github/workflows/firefox.yml'
+  pull_request:
+    paths:
+      - 'firefox/**'
+      - '.github/workflows/firefox.yml'
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate manifest and code
+        run: npx --yes web-ext@10 lint --source-dir firefox
+      - name: Build package
+        run: npx --yes web-ext@10 build --source-dir firefox --overwrite-dest
