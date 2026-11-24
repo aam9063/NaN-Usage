@@ -43,6 +43,18 @@ El service worker hace `fetch` con `credentials: "include"`. Como la extensión 
 
 Los endpoints no están documentados: si NaN los cambia, hay que actualizar las URLs.
 
+## Comunidad
+
+Esta extensión existe gracias a quien la usa y a quien la mejora. Por aquí puedes seguir:
+
+<a href="https://github.com/aam9063/NaN-Usage/graphs/contributors"><img src="https://contrib.rocks/image?repo=aam9063/NaN-Usage" alt="Contribuidores de NaN Usage" /></a>
+
+- **[Guía para contribuir](CONTRIBUTING.md)**: protocolo de issues y pull requests, cómo probar la extensión en local y las reglas de diseño.
+- **[Contribuidores](https://github.com/aam9063/NaN-Usage/graphs/contributors)**: quién ha puesto código aquí.
+- **[Issues](https://github.com/aam9063/NaN-Usage/issues)**: bugs y propuestas de mejora.
+
+Gracias a [@aam9063](https://github.com/aam9063), [@rharagon](https://github.com/rharagon) y [@frodriguezmtnz](https://github.com/frodriguezmtnz).
+
 ## Contribuir
 
 ¿Quieres reportar un bug, proponer una mejora o enviar un cambio? Lee [CONTRIBUTING.md](CONTRIBUTING.md): ahí están el protocolo de issues y pull requests, cómo probar la extensión en local y las reglas de diseño que no se rompen (nada de leer la cookie de sesión, telemetría, dependencias ni permisos de más).
