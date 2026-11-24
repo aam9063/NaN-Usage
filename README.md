@@ -27,6 +27,7 @@ La carpeta [`firefox/`](firefox/) contiene el port para Firefox: usa la barra la
 - Cache hit rate, reparto de tokens y gasto (24 h / 30 d) y ahorro por caché.
 - Por modelo: gasto, tokens, % de caché y coste real por millón de tokens frente a su tarifa.
 - Tema auto / claro / oscuro: se alterna desde el botón de la cabecera y se guarda en los ajustes.
+- Secciones configurables: muestra u oculta las tarjetas del panel desde "Ajustes y alertas"; se guarda en los ajustes.
 - Notificaciones: 80 / 90 / 100 %, ritmo que agota los créditos antes de la renovación, cuenta congelada y **gasto anómalo** (por defecto, 50 créditos en 15 min). Todo configurable en "Ajustes y alertas".
 
 ## Configuración
