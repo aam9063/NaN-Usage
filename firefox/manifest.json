@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NaN Usage",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Créditos, caché, gasto diario y por modelo de tu cuenta de nan.builders en la barra lateral, usando tu sesión del navegador.",
   "browser_specific_settings": {
     "gecko": {
