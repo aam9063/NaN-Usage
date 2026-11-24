@@ -10,12 +10,20 @@ const MODELS_COLLAPSED = 5;
 const CHART_DAYS = 14;
 
 const SECTIONS = [
-  { id: "credits", flag: "showCredits", label: "Créditos del periodo" },
+  { id: "credits", flag: "showCredits", label: "Créditos" },
   { id: "stats", flag: "showStats", label: "Resumen" },
   { id: "daily", flag: "showDaily", label: "Gasto diario" },
   { id: "cache", flag: "showCache", label: "Caché" },
   { id: "models", flag: "showModels", label: "Modelos" },
 ];
+const SECTION_BY_ID = Object.fromEntries(SECTIONS.map((s) => [s.id, s]));
+
+function sanitizeOrder(order) {
+  const known = new Set(SECTIONS.map((s) => s.id));
+  const clean = [...new Set((Array.isArray(order) ? order : []).filter((id) => known.has(id)))];
+  for (const id of known) if (!clean.includes(id)) clean.push(id);
+  return clean;
+}
 
 const ui = { showAllModels: false, cacheRange: "last30d" };
 let snap = null;
@@ -77,6 +85,7 @@ api.storage.onChanged.addListener((ch, area) => {
   if (ch.snapshot) snap = ch.snapshot.newValue;
   if (ch.settings) {
     settings = { ...DEFAULT_SETTINGS, ...(ch.settings.newValue || {}) };
+    if (sectionRowsEl) sectionControls();
     applyTheme();
   }
   if (ch.snapshot || ch.history || ch.settings) render();
@@ -124,9 +133,9 @@ function render() {
   const tone = left > 20 ? "" : left > 10 ? "warn" : "bad";
   setPulse(s.status === "frozen" ? "bad" : snap.state !== "ok" ? "off" : tone);
 
-  const nodes = SECTIONS
-    .filter(({ flag }) => settings[flag])
-    .map(({ id }) => sectionNode(id, s, split, tone));
+  const nodes = sanitizeOrder(settings.sectionOrder)
+    .filter((id) => settings[SECTION_BY_ID[id].flag])
+    .map((id) => sectionNode(id, s, split, tone));
 
   main.append(...nodes, settingsCard());
   updateFooter();
@@ -354,6 +363,7 @@ function costBadge(m) {
 
 // ── Ajustes ────────────────────────────────────────────────────
 let settingsEl = null;
+let sectionRowsEl = null;
 function settingsCard() {
   if (settingsEl) return settingsEl; // se crea una vez para no perder lo que estás escribiendo
   settingsEl = h("details", { class: "card" }, h("summary", {}, h("span", { class: "label" }, "Ajustes y alertas")));
@@ -369,6 +379,7 @@ function settingsCard() {
     const poll = h("select", { onchange: (e) => saveSettings({ pollMinutes: Number(e.target.value) }) },
       [1, 2, 5, 10, 15].map((m) => h("option", { value: m, selected: m === st.pollMinutes || null }, `${m} min`)));
 
+    sectionRowsEl = h("div", {});
     settingsEl.append(
       h("div", { class: "setting" }, h("span", {}, "Actualizar cada"), poll),
       h("div", { class: "setting" },
@@ -376,15 +387,52 @@ function settingsCard() {
         h("span", { class: "inline" }, check("spikeEnabled"), num("spikeCredits", 5, 5000), "créditos en", num("spikeWindow", 5, 240), "min")),
       h("div", { class: "setting" }, h("span", {}, "Avisos al 80, 90 y 100 % y de ritmo"), check("thresholdAlerts")),
       h("div", { class: "hint", style: "margin-top:10px" }, "Secciones del panel"),
-      ...SECTIONS.map((sec) =>
-        h("div", { class: "setting" }, h("span", {}, sec.label), check(sec.flag))),
+      sectionRowsEl,
       h("div", { class: "hint" },
-        "Desmarca una sección para ocultarla del panel. El badge y los avisos no cambian."),
+        "Desmarca una sección para ocultarla. Usa ↑ y ↓ para cambiar el orden. El badge y los avisos no cambian."),
       h("div", { class: "hint" },
         "El gasto anómalo se calcula con el historial local, así que depende de la frecuencia de actualización. ",
         "Con 5 min, una ventana de 15 min compara 3 lecturas."));
+    sectionControls();
   });
   return settingsEl;
+}
+
+function sectionControls() {
+  if (!sectionRowsEl) return;
+  const order = sanitizeOrder(settings.sectionOrder);
+  sectionRowsEl.replaceChildren(
+    ...order.map((id, i) => {
+      const sec = SECTION_BY_ID[id];
+      return h("div", { class: "setting" },
+        h("span", {}, sec.label),
+        h("span", { class: "inline" },
+          h("button", {
+            class: "mini", type: "button", title: `Subir ${sec.label}`, "aria-label": `Subir ${sec.label}`,
+            disabled: i === 0 || null, onclick: () => moveSection(id, -1),
+          }, "↑"),
+          h("button", {
+            class: "mini", type: "button", title: `Bajar ${sec.label}`, "aria-label": `Bajar ${sec.label}`,
+            disabled: i === order.length - 1 || null, onclick: () => moveSection(id, 1),
+          }, "↓"),
+          h("input", {
+            type: "checkbox", checked: settings[sec.flag] || null,
+            onchange: (e) => saveSettings({ [sec.flag]: e.target.checked }),
+          })));
+    })
+  );
+}
+
+function moveSection(id, dir) {
+  const order = sanitizeOrder(settings.sectionOrder);
+  const i = order.indexOf(id);
+  const j = i + dir;
+  if (i < 0 || j < 0 || j >= order.length) return;
+  [order[i], order[j]] = [order[j], order[i]];
+  settings.sectionOrder = order; // respuesta inmediata; se persiste justo después
+  sectionControls();
+  render();
+  saveSettings({ sectionOrder: order });
 }
 
 function setPulse(tone) {

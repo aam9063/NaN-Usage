@@ -22,6 +22,7 @@ export const DEFAULT_SETTINGS = {
   showDaily: true,
   showCache: true,
   showModels: true,
+  sectionOrder: ["credits", "stats", "daily", "cache", "models"], // orden de las tarjetas
 };
 
 const ALERT_THRESHOLDS = [80, 90, 100];

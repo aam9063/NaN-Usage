@@ -247,6 +247,14 @@ details.card[open] summary::after { content: "−"; }
 input[type="number"], select { width: 64px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font: inherit; padding: 4px 6px; }
 select { width: auto; }
 input[type="checkbox"] { accent-color: var(--purple); width: 14px; height: 14px; }
+.mini {
+  display: grid; place-items: center;
+  width: 22px; height: 22px; padding: 0;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--muted); font-size: 12px; line-height: 1;
+}
+.mini:hover:not(:disabled) { color: var(--text); border-color: var(--muted); }
+.mini:disabled { opacity: 0.35; cursor: default; }
 .hint { color: var(--faint); font-size: 10.5px; line-height: 1.5; }
 .hint code { background: var(--surface-2); padding: 1px 4px; border-radius: 4px; color: var(--muted); }
 
