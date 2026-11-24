@@ -2,6 +2,8 @@
 
 Port de la extensión a Firefox (Manifest V3). La versión de Chrome sigue en la raíz del repo y no se modifica.
 
+La UI es idéntica a la de Chrome, incluido el tema auto / claro / oscuro que se alterna desde el botón de la cabecera y se guarda en los ajustes.
+
 ## Diferencias respecto a Chrome
 
 | Chrome | Firefox | Motivo |
