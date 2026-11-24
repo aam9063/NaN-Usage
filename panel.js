@@ -1,6 +1,6 @@
 import {
   refresh, summarize, summarizeSplit, dailySeries, recentDelta,
-  getSettings, saveSettings, BREAKDOWN_URL, PORTAL_URL, BUY_URL, COLORS,
+  getSettings, saveSettings, DEFAULT_SETTINGS, BREAKDOWN_URL, PORTAL_URL, BUY_URL, COLORS,
   fmt, fmt2, fmtPct, fmtCompact, fmtTokens, fmtMillions, fmtDate, fmtDateTime, fmtDuration, fmtAgo,
 } from "./lib.js";
 
@@ -8,9 +8,18 @@ const $ = (s) => document.querySelector(s);
 const MODELS_COLLAPSED = 5;
 const CHART_DAYS = 14;
 
+const SECTIONS = [
+  { id: "credits", flag: "showCredits", label: "Créditos del periodo" },
+  { id: "stats", flag: "showStats", label: "Resumen" },
+  { id: "daily", flag: "showDaily", label: "Gasto diario" },
+  { id: "cache", flag: "showCache", label: "Caché" },
+  { id: "models", flag: "showModels", label: "Modelos" },
+];
+
 const ui = { showAllModels: false, cacheRange: "last30d" };
 let snap = null;
 let history = [];
+let settings = { ...DEFAULT_SETTINGS };
 
 // Helper para crear nodos sin innerHTML (los nombres de modelo vienen del servidor).
 function h(tag, attrs = {}, ...children) {
@@ -65,8 +74,11 @@ chrome.storage.onChanged.addListener((ch, area) => {
   if (area !== "local") return;
   if (ch.history) history = ch.history.newValue || [];
   if (ch.snapshot) snap = ch.snapshot.newValue;
-  if (ch.settings) applyTheme();
-  if (ch.snapshot || ch.history) render();
+  if (ch.settings) {
+    settings = { ...DEFAULT_SETTINGS, ...(ch.settings.newValue || {}) };
+    applyTheme();
+  }
+  if (ch.snapshot || ch.history || ch.settings) render();
 });
 
 document.addEventListener("visibilitychange", () => {
@@ -75,7 +87,10 @@ document.addEventListener("visibilitychange", () => {
 setInterval(updateFooter, 30_000);
 
 (async () => {
-  ({ snapshot: snap = null, history = [] } = await chrome.storage.local.get(["snapshot", "history"]));
+  const st = await chrome.storage.local.get(["snapshot", "history", "settings"]);
+  snap = st.snapshot ?? null;
+  history = st.history ?? [];
+  settings = { ...DEFAULT_SETTINGS, ...(st.settings || {}) };
   if (snap?.data) render();
   await load();
 })();
@@ -108,15 +123,20 @@ function render() {
   const tone = left > 20 ? "" : left > 10 ? "warn" : "bad";
   setPulse(s.status === "frozen" ? "bad" : snap.state !== "ok" ? "off" : tone);
 
-  main.append(
-    creditsCard(s, tone),
-    statsRow(s),
-    dailyCard(),
-    split ? cacheCard(split) : cacheSavedCard(s),
-    modelsCard(s),
-    settingsCard()
-  );
+  const nodes = SECTIONS
+    .filter(({ flag }) => settings[flag])
+    .map(({ id }) => sectionNode(id, s, split, tone));
+
+  main.append(...nodes, settingsCard());
   updateFooter();
+}
+
+function sectionNode(id, s, split, tone) {
+  if (id === "credits") return creditsCard(s, tone);
+  if (id === "stats") return statsRow(s);
+  if (id === "daily") return dailyCard();
+  if (id === "cache") return split ? cacheCard(split) : cacheSavedCard(s);
+  return modelsCard(s);
 }
 
 function updateFooter() {
@@ -354,6 +374,11 @@ function settingsCard() {
         h("span", {}, "Avisar de gasto anómalo"),
         h("span", { class: "inline" }, check("spikeEnabled"), num("spikeCredits", 5, 5000), "créditos en", num("spikeWindow", 5, 240), "min")),
       h("div", { class: "setting" }, h("span", {}, "Avisos al 80, 90 y 100 % y de ritmo"), check("thresholdAlerts")),
+      h("div", { class: "hint", style: "margin-top:10px" }, "Secciones del panel"),
+      ...SECTIONS.map((sec) =>
+        h("div", { class: "setting" }, h("span", {}, sec.label), check(sec.flag))),
+      h("div", { class: "hint" },
+        "Desmarca una sección para ocultarla del panel. El badge y los avisos no cambian."),
       h("div", { class: "hint" },
         "El gasto anómalo se calcula con el historial local, así que depende de la frecuencia de actualización. ",
         "Con 5 min, una ventana de 15 min compara 3 lecturas."));

@@ -19,6 +19,11 @@ export const DEFAULT_SETTINGS = {
   spikeCredits: 50,
   spikeWindow: 15,       // minutos
   theme: "auto",         // auto | light | dark
+  showCredits: true,     // tarjetas visibles en el panel
+  showStats: true,
+  showDaily: true,
+  showCache: true,
+  showModels: true,
 };
 
 const ALERT_THRESHOLDS = [80, 90, 100];
