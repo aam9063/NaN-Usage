@@ -53,7 +53,7 @@ Esta extensión existe gracias a quien la usa y a quien la mejora. Por aquí pue
 - **[Contribuidores](https://github.com/aam9063/NaN-Usage/graphs/contributors)**: quién ha puesto código aquí.
 - **[Issues](https://github.com/aam9063/NaN-Usage/issues)**: bugs y propuestas de mejora.
 
-Gracias a [@aam9063](https://github.com/aam9063), [@rharagon](https://github.com/rharagon) y [@frodriguezmtnz](https://github.com/frodriguezmtnz).
+Gracias a [@rharagon](https://github.com/rharagon) y [@frodriguezmtnz](https://github.com/frodriguezmtnz).
 
 ## Contribuir
 
